@@ -19,7 +19,10 @@ export function SearchForm({ onResults, onLoading, onError }) {
         return r.json();
       })
       .then(setAirports)
-      .catch((e) => setFetchError(e.message));
+      .catch((e) => {
+        console.error('[SkyPath] Failed to load airports:', e.message);
+        setFetchError(e.message);
+      });
   }, []);
 
   const handleSubmit = (e) => {
@@ -56,6 +59,7 @@ export function SearchForm({ onResults, onLoading, onError }) {
       })
       .catch((err) => {
         const message = err.message || 'Something went wrong. Please try again.';
+        console.error('[SkyPath] Search failed:', { origin: origin?.code, destination: destination?.code, date, message });
         onError(message);
         onResults([]);
         onLoading(false);
@@ -71,7 +75,10 @@ export function SearchForm({ onResults, onLoading, onError }) {
         return r.json();
       })
       .then(setAirports)
-      .catch((e) => setFetchError(e.message));
+      .catch((e) => {
+    console.error('[SkyPath] Retry airports failed:', e.message);
+    setFetchError(e.message);
+  });
   };
 
   return (

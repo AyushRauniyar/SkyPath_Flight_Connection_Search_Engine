@@ -12,6 +12,11 @@ export function loadFlightsData() {
   ];
   const path = candidates.find((p) => existsSync(p));
   if (!path) throw new Error('flights.json not found. Tried: ' + candidates.join(', '));
+  console.log('[LoadData] Using flights.json at', path);
   const raw = readFileSync(path, 'utf-8');
-  return JSON.parse(raw);
+  const data = JSON.parse(raw);
+  if (!data.airports?.length || !data.flights?.length) {
+    console.warn('[LoadData] Data may be incomplete:', { airports: data.airports?.length, flights: data.flights?.length });
+  }
+  return data;
 }

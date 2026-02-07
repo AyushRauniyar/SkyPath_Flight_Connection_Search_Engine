@@ -7,14 +7,26 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Request logging for debugging (method, path, query, status, duration)
+app.use((req, res, next) => {
+  const start = Date.now();
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    const logLine = `[${new Date().toISOString()}] ${req.method} ${req.path} ${res.statusCode} ${duration}ms`;
+    const query = Object.keys(req.query || {}).length ? ` query=${JSON.stringify(req.query)}` : '';
+    console.log(logLine + query);
+  });
+  next();
+});
+
 let searchService;
 
 try {
   const { airports, flights } = loadFlightsData();
   searchService = createSearchService(airports, flights);
-  console.log(`Loaded ${airports.length} airports and ${flights.length} flights`);
+  console.log(`[Startup] Loaded ${airports.length} airports and ${flights.length} flights`);
 } catch (err) {
-  console.error('Failed to load flights.json:', err.message);
+  console.error('[Startup] Failed to load flights.json:', err.message, err.stack);
   process.exit(1);
 }
 
@@ -54,21 +66,22 @@ app.get('/api/search', (req, res) => {
   if (!airportByCode(origin)) {
     return res.status(400).json({
       error: 'Invalid airport',
-      message: `Unknown origin airport code: ${origin}.`,
+      message: `Invalid airport code for origin: "${origin}". Please select an airport from the list.`,
     });
   }
   if (!airportByCode(destination)) {
     return res.status(400).json({
       error: 'Invalid airport',
-      message: `Unknown destination airport code: ${destination}.`,
+      message: `Invalid airport code for destination: "${destination}". Please select an airport from the list.`,
     });
   }
 
   try {
     const itineraries = searchService.search(origin, destination, isoDate);
+    console.log(`[Search] ${origin} → ${destination} ${isoDate} → ${itineraries.length} result(s)`);
     res.json({ itineraries });
   } catch (err) {
-    console.error('Search error:', err);
+    console.error('[Search error]', { origin, destination, date: isoDate, err: err.message, stack: err.stack });
     res.status(500).json({
       error: 'Search failed',
       message: err.message || 'An error occurred while searching. Please try again.',
@@ -78,7 +91,7 @@ app.get('/api/search', (req, res) => {
 
 // Global error handler for unhandled route errors and async failures
 app.use((err, req, res, next) => {
-  console.error('Unhandled error:', err);
+  console.error('[Unhandled error]', { path: req?.path, method: req?.method, err: err?.message, stack: err?.stack });
   res.status(500).json({
     error: 'Internal server error',
     message: 'Something went wrong. Please try again.',
@@ -87,5 +100,5 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`SkyPath API listening on port ${PORT}`);
+  console.log(`[Startup] SkyPath API listening on port ${PORT}`);
 });
