@@ -1,0 +1,140 @@
+.search-form {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.form-error {
+  color: #fca5a5;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.retry-btn {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
+  background: transparent;
+  border: 1px solid #fca5a5;
+  color: #fca5a5;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.retry-btn:hover {
+  background: rgba(252, 165, 165, 0.15);
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.airport-input-wrap,
+.date-wrap {
+  flex: 1;
+  min-width: 160px;
+  position: relative;
+}
+
+.input-label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  margin-bottom: 0.35rem;
+}
+
+.airport-input,
+.date-input {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  font-size: 1rem;
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #e2e8f0;
+}
+
+.airport-input:focus,
+.date-input:focus {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+}
+
+.airport-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.airport-option {
+  padding: 0.6rem 0.75rem;
+  cursor: pointer;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.airport-option:hover,
+.airport-option.highlight {
+  background: #334155;
+}
+
+.airport-code {
+  font-weight: 600;
+  color: #38bdf8;
+  min-width: 2.5rem;
+}
+
+.airport-desc {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+.date-input {
+  min-width: 140px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  background: #38bdf8;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #7dd3fc;
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
