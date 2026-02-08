@@ -6,11 +6,15 @@
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "node --watch src/index.js"
+    "dev": "node --watch src/index.js",
+    "test": "node --test src/utils/timezone.test.js src/services/searchService.test.js src/api.test.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.0",
     "luxon": "^3.4.4"
+  },
+  "devDependencies": {
+    "supertest": "^7.0.0"
   }
 }
